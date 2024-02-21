@@ -14,8 +14,10 @@ class EvidenceActivityModel extends BaseModel
 
     function getEvidenceActivityBy($data = [])
     {
-        $sql = "SELECT *
-                FROM evidence_activity  ";
+        $sql = "SELECT *  
+        FROM evidence_activity 
+        WHERE ac_id = '" .$data['ac_id']. "'
+        AND user_id = '" .$data['user_id']. "' ";
         if ($result = mysqli_query(static::$db, $sql, MYSQLI_USE_RESULT)) {
             $data = [];
             while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
