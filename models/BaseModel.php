@@ -2,33 +2,11 @@
 
 abstract class BaseModel
 {
-
-    // public static $db;
-
-    // protected $host = "aws.connect.psdb.cloud";
-    // protected $username = "z3kunppp1s7l2i0c89a2";
-    // protected $password = "pscale_pw_52nT6ilKXB4U2ihgWg50omgcHcfBdsDo39vKJWZwe25";
-    // protected $db_name = "volunteer";
-    
-    // protected $host = "localhost";
-    // protected $username = "root";
-    // protected $password = "";
-    // protected $db_name = "volunteer_api";
-    // function __construct()
-    // {
-    //     static::$db = mysqli_connect($host, $username, $password, $db_name);
-    //     if (mysqli_connect_errno()) {
-    //         echo "Failed to connect to MySQL: " . mysqli_connect_error();
-    //     } else {
-    //         echo "connect";
-    //     }
-    //     mysqli_set_charset(static::$db, "utf8");
-    // }
     public static $db;
-    protected $host = "sql6.freemysqlhosting.net";
-    protected $username = "sql6685474";
-    protected $password = "CAc3xKLBIk";
-    protected $db_name = "sql6685474";
+    protected $host = "fnx6frzmhxw45qcb.cbetxkdyhwsb.us-east-1.rds.amazonaws.com";
+    protected $username = "tszgh948pnuwdmhm";
+    protected $password = "wxic0rg5yyntykbr";
+    protected $db_name = "an67nmpljgj86jxs";
     protected $port = 3306;
 
     function __construct()
