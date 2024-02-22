@@ -65,7 +65,7 @@ class ActivityModel extends BaseModel
                     WHERE activity_list.ac_id  = activity.ac_id) as participating
             FROM activity
             WHERE 1" . $condition .
-                "AND ((CURDATE() = date_start AND CURTIME() <= time_start) OR CURDATE() < date_start)
+                "AND ((CURDATE() = date_start AND DATE_ADD(CURTIME(), INTERVAL 7 HOUR) <= time_start) OR CURDATE() < date_start)
                 GROUP BY activity.ac_id";
         if ($result = mysqli_query(static::$db, $sql, MYSQLI_USE_RESULT)) {
             $data = [];
@@ -105,8 +105,8 @@ class ActivityModel extends BaseModel
         WHERE 1
             " . $condition ."
             AND CURDATE() BETWEEN date_start AND date_end
-            AND (( CURTIME() BETWEEN activity.time_start AND activity.time_end ) 
-            OR ( CURTIME() > activity.time_end AND CURDATE() < activity.date_end ))
+            AND (( DATE_ADD(CURTIME(), INTERVAL 7 HOUR) BETWEEN activity.time_start AND activity.time_end ) 
+            OR ( DATE_ADD(CURTIME(), INTERVAL 7 HOUR) > activity.time_end AND CURDATE() < activity.date_end ))
         GROUP BY
             activity.ac_id, activity.ac_name, activity.user_id,
             activity.date_start, activity.date_end, activity.time_start, activity.time_end ";
@@ -186,7 +186,7 @@ class ActivityModel extends BaseModel
                 FROM
                     `activity`
                 WHERE
-                    ((CURDATE() = date_end AND CURTIME() >= time_end) OR CURDATE() > date_end)" . $condition;
+                    ((CURDATE() = date_end AND DATE_ADD(CURTIME(), INTERVAL 7 HOUR) >= time_end) OR CURDATE() > date_end)" . $condition;
         if ($result = mysqli_query(static::$db, $sql, MYSQLI_USE_RESULT)) {
             $data = [];
             while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
