@@ -98,20 +98,18 @@ class ActivityListModel extends BaseModel
     function insertActivityList($data = [])
     {   
         $sql = "";
-        foreach($data['users'] as $row) {
-            $sql = " INSERT INTO activity_list ( 
-            	ac_id,
-                user_id
-            )  VALUES ('" .
-            $data['ac_id'] . "','" .
-            $row['user_id'] . "' ) ";  
-            if (mysqli_query(static::$db, $sql, MYSQLI_USE_RESULT)) {
-                return true;
-            } else {
-                return false;
-            }
-        };   
-        return true;
+    foreach($data['users'] as $row) {
+        $sql = "INSERT INTO activity_list (ac_id, user_id) VALUES ('" .
+                $data['ac_id'] . "','" .
+                $row['user_id'] . "' ) ";  
+                
+        if (!mysqli_query(static::$db, $sql, MYSQLI_USE_RESULT)) {
+            // If any insert fails, return false
+            return false;
+        }
+    }
+    // If all inserts are successful, return true
+    return true;
     }
 
     //Add activitylist

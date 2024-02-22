@@ -70,9 +70,9 @@ class NewsModel extends BaseModel
         }
     }
 
-    function deleteNewsByID($code)
+    function deleteNewsByID($data = [])
     {
-        $sql = " DELETE FROM news WHERE news_id  = '$code' ";
+        $sql = " DELETE FROM news WHERE news_id  = '" . static::$db->real_escape_string($data['news_id']) . "' ";
         return mysqli_query(static::$db, $sql, MYSQLI_USE_RESULT);
     }
 }

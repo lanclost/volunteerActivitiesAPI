@@ -61,10 +61,11 @@ class AccumulatedModel extends BaseModel
 
     function getAccumulatedByRemaining($data = [])
     {
-        $sql = "SELECT accumulated_id,
-        SUM(accumulated_hours) as sum_accumulated_hours,
-        (SELECT hour_max FROM activity_category WHERE ac_category_id = '7') as  maximum_hour,
-        ((SELECT hour_max FROM activity_category WHERE ac_category_id = '7') - (SUM(accumulated_hours))) as remaining_hours
+        $sql = "SELECT
+            accumulated_id,
+            COALESCE(SUM(accumulated_hours), 0) as sum_accumulated_hours,
+            (SELECT COALESCE(hour_max, 0) FROM activity_category WHERE ac_category_id = '7') as maximum_hour,
+            GREATEST((SELECT COALESCE(hour_max, 0) FROM activity_category WHERE ac_category_id = '7') - COALESCE(SUM(accumulated_hours), 0), 0) as remaining_hours
         FROM `accumulated` 
         WHERE user_id = '" . $data['user_id'] . "' ";
         if ($result = mysqli_query(static::$db, $sql, MYSQLI_USE_RESULT)) {
