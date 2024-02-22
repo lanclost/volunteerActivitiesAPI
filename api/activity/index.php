@@ -152,6 +152,19 @@ if ($request["action"] == "getActivityBy") {
         $response_data['require'] = false;
         $response_data['message'] ='ผิดพลาด';
     }
+} else if ($request["action"] == "getActivityByAssociated") {
+ 
+    $data = $activity_model->getActivityByAssociated($request);
+    if($data){
+        $response_data['data'] =$data;
+        $response_data['require'] = true;
+        $response_data['message'] ='สำเร็จ';
+    
+    }else{
+        $response_data['data'] =[];
+        $response_data['require'] = false;
+        $response_data['message'] ='ผิดพลาด';
+    }
 }
 
 

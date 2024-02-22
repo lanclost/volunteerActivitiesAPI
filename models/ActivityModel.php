@@ -120,15 +120,12 @@ class ActivityModel extends BaseModel
         }
     }
 
-    //Shows information about activities the user has participated in.
-    function getActivityByAssociated($data = [])
+    //Displays information about activities that students participate in.
+    function getActivityByAssociatedSD($data = [])
     {
         $condition = "";
         if (isset($data['ac_name'])) {
             $condition .= " AND ac_name LIKE '%" . $data['ac_name'] . "%'";
-        }
-        if (isset($data['activity_approve_status'])) {
-            $condition .= " AND activity_approve_status = '" . $data['activity_approve_status'] . "'";
         }
         if (isset($data['user_id'])) {
             $condition .= " AND activity_list.user_id = '" . $data['user_id'] . "'";
@@ -154,6 +151,43 @@ class ActivityModel extends BaseModel
     ".$condition."
     GROUP BY
         activity_list.ac_id;";
+        if ($result = mysqli_query(static::$db, $sql, MYSQLI_USE_RESULT)) {
+            $data = [];
+            while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+                $data[] = $row;
+            }
+            $result->close();
+            return $data;
+        }
+    }
+
+    //Shows information about the activities the user has participated in.
+    function getActivityByAssociated($data = [])
+    {
+        $condition = "";
+        if (isset($data['ac_name'])) {
+            $condition .= " AND ac_name LIKE '%" . $data['ac_name'] . "%'";
+        }
+        if (isset($data['user_id'])) {
+            $condition .= " AND activity.user_id = '" . $data['user_id'] . "'";
+        }
+        $sql = "SELECT
+        activity.ac_id,
+        activity.ac_name,
+        activity.user_id,
+        activity.date_start,
+        activity.date_end,
+        activity.time_start,
+        activity.time_end,
+        CONCAT(activity.date_start, ' ', activity.date_end) AS DateRange,
+        CONCAT(activity.time_start, ' - ', activity.time_end) AS TimeRange,
+        (SELECT CONCAT(COUNT(activity_list.user_id), '/', activity.participants_num) 
+            FROM activity_list 
+            WHERE activity_list.ac_id = activity.ac_id) AS participating
+    FROM
+        activity
+    WHERE 1
+    $condition";
         if ($result = mysqli_query(static::$db, $sql, MYSQLI_USE_RESULT)) {
             $data = [];
             while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
