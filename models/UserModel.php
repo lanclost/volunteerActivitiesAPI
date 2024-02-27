@@ -23,7 +23,6 @@ class UserModel extends BaseModel
         WHERE username = '" . $username . "'  
         AND password = '" . $password . "'  
         ";
-
         if ($result = mysqli_query(static::$db, $sql, MYSQLI_USE_RESULT)) {
             $data = [];
             while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
@@ -36,7 +35,29 @@ class UserModel extends BaseModel
             return $sql;
         }
     }
-
+    function getUserByCheck($data = [])
+    {
+        $condition = '';
+        if (isset($data['username'])) {
+            $condition .= "AND (username LIKE ('%" . $data['username'] . "%'))";
+        }
+        $sql = "SELECT *, CONCAT(first_name,' ',last_name)AS name,
+        (SELECT type_name FROM user_type WHERE user_type.user_type_id  =user.user_type_id) as type_name,
+        (SELECT department_name FROM department WHERE department.department_id  =user.department_id) as department_name,
+        (SELECT faculty_name FROM faculty WHERE faculty.faculty_id  =user.faculty_id) as faculty_name,
+        (SELECT prefix_name FROM prefix WHERE prefix.prefix_id  =user.prefix_id) as prefix_name
+        FROM user 
+        WHERE user_approve_status = '".$data['user_approve_status'] ."'
+        AND username = '".$data['username'] ."' ";
+        if ($result = mysqli_query(static::$db, $sql, MYSQLI_USE_RESULT)) {
+            $data = [];
+            while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+                $data[] = $row;
+            }
+            $result->close();
+            return $data;
+        }
+    }
     //Create primary ID information
     function getUserLastID($data = [])
     {
@@ -80,11 +101,9 @@ class UserModel extends BaseModel
             }
             $result->close();
             return $data;
-        }
-        
+        } 
     }
 
-    
     function getUserByusername($data = [])
     {
         $sql = "SELECT * FROM user WHERE username = '".$data['username'] ."' ";

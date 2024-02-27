@@ -98,6 +98,20 @@ if (isset($request['user_id'])) {
         $response_data['message'] ='ผิดพลาด';
     }
 
+}else if ($request["action"] == "getUserByCheck") {
+ 
+    $data = $user_model->getUserByCheck($request);
+    if($data){
+        $response_data['data'] =$data;
+        $response_data['require'] = true;
+        $response_data['message'] ='สำเร็จ';
+    
+    }else{
+        $response_data['data'] =[];
+        $response_data['require'] = false;
+        $response_data['message'] ='ผิดพลาด';
+    }
+
 }
 
 

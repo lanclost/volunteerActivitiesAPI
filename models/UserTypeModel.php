@@ -30,7 +30,7 @@ class UserTypeModel extends BaseModel
 
     function getUserTypeByNoAdmin($data = [])
     {
-        $sql = "SELECT * FROM `user_type` WHERE NOT user_type_id = '01' ";
+        $sql = "SELECT * FROM `user_type` WHERE user_type_id NOT IN ('01', ('04'), '05') ";
         if ($result = mysqli_query(static::$db, $sql, MYSQLI_USE_RESULT)) {
             $data = [];
             while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
