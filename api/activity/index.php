@@ -152,9 +152,9 @@ if ($request["action"] == "getActivityBy") {
         $response_data['require'] = false;
         $response_data['message'] ='ผิดพลาด';
     }
-} else if ($request["action"] == "getActivityByAssociated") {
+} else if ($request["action"] == "getActivityByAssociatedSD") {
  
-    $data = $activity_model->getActivityByAssociated($request);
+    $data = $activity_model->getActivityByAssociatedSD($request);
     if($data){
         $response_data['data'] =$data;
         $response_data['require'] = true;
